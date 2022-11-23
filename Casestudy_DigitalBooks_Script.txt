@@ -1,0 +1,312 @@
+USE [master]
+GO
+/****** Object:  Database [DIGITALBOOKS]    Script Date: 23-11-2022 16:53:05 ******/
+CREATE DATABASE [DIGITALBOOKS]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'DIGITALBOOKS', FILENAME = N'C:\Users\cogdotnet1687\DIGITALBOOKS.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'DIGITALBOOKS_log', FILENAME = N'C:\Users\cogdotnet1687\DIGITALBOOKS_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [DIGITALBOOKS] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [DIGITALBOOKS].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [DIGITALBOOKS] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET AUTO_CLOSE ON 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET  MULTI_USER 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [DIGITALBOOKS] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [DIGITALBOOKS] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [DIGITALBOOKS] SET QUERY_STORE = OFF
+GO
+USE [DIGITALBOOKS]
+GO
+/****** Object:  Table [dbo].[book]    Script Date: 23-11-2022 16:53:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[book](
+	[BookId] [int] IDENTITY(1,1) NOT NULL,
+	[BookName] [varchar](500) NULL,
+	[CategoryId] [int] NULL,
+	[Price] [decimal](18, 0) NULL,
+	[Publisher] [varchar](500) NULL,
+	[UserId] [int] NULL,
+	[PublishedDate] [date] NULL,
+	[Content] [ntext] NULL,
+	[Active] [bit] NULL,
+	[CreatedDate] [date] NULL,
+	[Createdby] [int] NULL,
+	[ModifiedDate] [date] NULL,
+	[Modifiedby] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[BookId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY] TEXTIMAGE_ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Category]    Script Date: 23-11-2022 16:53:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Category](
+	[CategoryId] [int] IDENTITY(1,1) NOT NULL,
+	[CategoryName] [varchar](100) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[CategoryId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Purchase]    Script Date: 23-11-2022 16:53:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Purchase](
+	[PurchaseId] [int] IDENTITY(1,1) NOT NULL,
+	[EmailId] [varchar](500) NULL,
+	[BookId] [int] NULL,
+	[PurchaseDate] [date] NULL,
+	[PaymentMode] [varchar](200) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[PurchaseId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[RoleMaster]    Script Date: 23-11-2022 16:53:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[RoleMaster](
+	[RoleId] [int] IDENTITY(1,1) NOT NULL,
+	[RoleName] [varchar](500) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[RoleId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[UserTable]    Script Date: 23-11-2022 16:53:06 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[UserTable](
+	[UserId] [int] IDENTITY(1,1) NOT NULL,
+	[UserName] [varchar](500) NULL,
+	[EmailId] [varchar](300) NULL,
+	[Password] [nvarchar](500) NULL,
+	[RoleId] [int] NULL,
+	[FirstName] [varchar](500) NULL,
+	[LastName] [varchar](500) NULL,
+	[Active] [bit] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[UserId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[book] ON 
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1, N'abcBook', 1, CAST(10 AS Decimal(18, 0)), N'sailaja', 3, CAST(N'2022-02-10' AS Date), N'hello', 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (2, N'cdeBook', 1, CAST(20 AS Decimal(18, 0)), N'siri', 1, CAST(N'2022-03-10' AS Date), N'nice book', 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1002, N'AnimalStory', 1, CAST(200 AS Decimal(18, 0)), N'sailaja', 3, CAST(N'2022-09-11' AS Date), N'tiger', 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1005, N'Jungle', 1, CAST(300 AS Decimal(18, 0)), N'sailaja', 3, CAST(N'2022-03-10' AS Date), N'Animals', 0, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1006, N'ghadg', 1, CAST(390 AS Decimal(18, 0)), N'sbdjbd', 3, CAST(N'2022-09-12' AS Date), N'Hi', 0, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1007, N'sri', 1, CAST(270 AS Decimal(18, 0)), N'sridevi', 3, CAST(N'2022-09-12' AS Date), N'updating book', 0, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1008, N'Animalss', 1, CAST(450 AS Decimal(18, 0)), N'sailaja', 3, CAST(N'2022-09-13' AS Date), N'about Animals', 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1009, N'AnimalStories', 1, CAST(500 AS Decimal(18, 0)), N'sailaja', 3, CAST(N'2022-09-13' AS Date), N'about animals', 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1010, N'zz', 1, CAST(100 AS Decimal(18, 0)), N'sailaja', 3, CAST(N'2022-09-14' AS Date), N'bcjsbcj', 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1011, N'gdh', 1, CAST(1000 AS Decimal(18, 0)), N'sailaja', 3, CAST(N'2022-09-15' AS Date), N'djvbjdvmd', 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1012, N'ghhjhs', 1, CAST(20 AS Decimal(18, 0)), N'sailaja', 3, CAST(N'2022-09-15' AS Date), N'dhwdb', 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1013, N'cognizant', 1, CAST(1000 AS Decimal(18, 0)), N'training', NULL, CAST(N'2022-09-19' AS Date), N'net', 1, NULL, NULL, NULL, NULL)
+GO
+INSERT [dbo].[book] ([BookId], [BookName], [CategoryId], [Price], [Publisher], [UserId], [PublishedDate], [Content], [Active], [CreatedDate], [Createdby], [ModifiedDate], [Modifiedby]) VALUES (1014, N'vhs', 1, CAST(10 AS Decimal(18, 0)), N'n xns', NULL, CAST(N'2022-09-20' AS Date), N'njcsvn', 1, NULL, NULL, NULL, NULL)
+GO
+SET IDENTITY_INSERT [dbo].[book] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Category] ON 
+GO
+INSERT [dbo].[Category] ([CategoryId], [CategoryName]) VALUES (1, N'Fiction')
+GO
+INSERT [dbo].[Category] ([CategoryId], [CategoryName]) VALUES (2, N'Comic')
+GO
+SET IDENTITY_INSERT [dbo].[Category] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Purchase] ON 
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (1, N'sailajaP@gmail.com', 1002, CAST(N'2022-09-13' AS Date), N'phonepe')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (2, N'sailajapyla@gmail.com', 1005, CAST(N'2022-09-13' AS Date), N'phonepe')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (3, N'siri@123', 1, CAST(N'2022-09-13' AS Date), N'googlepe')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (4, N'sailaja123@gmail.com', NULL, CAST(N'2022-09-14' AS Date), N'card')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (5, N'sailaja123@gmail.com', NULL, CAST(N'2022-09-14' AS Date), N'card')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (6, N'sailaja123@gmail.com', NULL, CAST(N'2022-09-14' AS Date), N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (7, N'sailaja123@gmail.com', NULL, CAST(N'2022-09-14' AS Date), N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (8, N'sailajaP@gmail.com', NULL, CAST(N'2022-09-14' AS Date), N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (9, N'sailajaP@gmail.com', NULL, CAST(N'2022-09-14' AS Date), N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (10, N'sailajapyla@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (11, N'sailajapyla@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (12, N'sailajapyla@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (13, N'sailajapyla@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (14, N'sailajapyla@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (15, N'sailajapyla@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (16, N'sailajapyla@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (17, N'sailajaP@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (18, N'sailajapyla@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (19, N'sailajaP@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (20, N'sailajapyla@gmail.com', NULL, NULL, N'')
+GO
+INSERT [dbo].[Purchase] ([PurchaseId], [EmailId], [BookId], [PurchaseDate], [PaymentMode]) VALUES (21, N'sailajaP@gmail.com', NULL, NULL, N'')
+GO
+SET IDENTITY_INSERT [dbo].[Purchase] OFF
+GO
+SET IDENTITY_INSERT [dbo].[RoleMaster] ON 
+GO
+INSERT [dbo].[RoleMaster] ([RoleId], [RoleName]) VALUES (1, N'Author')
+GO
+INSERT [dbo].[RoleMaster] ([RoleId], [RoleName]) VALUES (2, N'Reader')
+GO
+SET IDENTITY_INSERT [dbo].[RoleMaster] OFF
+GO
+SET IDENTITY_INSERT [dbo].[UserTable] ON 
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (1, N'sai', N'sai@gmail.com', N'123456', 1, N'sailaja', N'p', 1)
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (2, N'siri', N'siri@123', N'MTIzNDU=', 2, N'siri', N'p', 1)
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (3, N'abc', N'abc@gmail.com', N'MTIzNA==', 1, N'ab', N'c', 1)
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (1003, N'Sailaja', N'sailaja@gmail.com', N'MTIzNA==', 2, N'sailaja', N'pyla', 1)
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (1004, N'srinivas', N'srinivas@gmail.com', N'MTIzNA==', 1, N'srinivas', N's', 1)
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (1005, N'Sridevi', N'sri@123', N'MTIzNA==', 1, N'sridevi', N'p', 1)
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (1006, N'saialjaPyla', N'sailajapyla@123', N'MTIzNA==', 1, N'sailaja', N'pyla', 1)
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (1007, N'adya', N'adya@123', N'MTIzNA==', 1, N'adya', N'k', 1)
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (1008, N'SailajaPyla', N'sailajapyla@gmail.com', N'MTIzNA==', 1, N'sailaja', N'p', 1)
+GO
+INSERT [dbo].[UserTable] ([UserId], [UserName], [EmailId], [Password], [RoleId], [FirstName], [LastName], [Active]) VALUES (1010, N'sp', N'sp@123', N'MTIzNA==', 1, N'sp', N'p', 1)
+GO
+SET IDENTITY_INSERT [dbo].[UserTable] OFF
+GO
+SET ANSI_PADDING ON
+GO
+/****** Object:  Index [UQ__UserTabl__7ED91ACEBCF00F22]    Script Date: 23-11-2022 16:53:06 ******/
+ALTER TABLE [dbo].[UserTable] ADD UNIQUE NONCLUSTERED 
+(
+	[EmailId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, SORT_IN_TEMPDB = OFF, IGNORE_DUP_KEY = OFF, ONLINE = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+GO
+ALTER TABLE [dbo].[book]  WITH CHECK ADD FOREIGN KEY([CategoryId])
+REFERENCES [dbo].[Category] ([CategoryId])
+GO
+ALTER TABLE [dbo].[book]  WITH CHECK ADD FOREIGN KEY([UserId])
+REFERENCES [dbo].[UserTable] ([UserId])
+GO
+ALTER TABLE [dbo].[Purchase]  WITH CHECK ADD FOREIGN KEY([BookId])
+REFERENCES [dbo].[book] ([BookId])
+GO
+ALTER TABLE [dbo].[UserTable]  WITH CHECK ADD FOREIGN KEY([RoleId])
+REFERENCES [dbo].[RoleMaster] ([RoleId])
+GO
+USE [master]
+GO
+ALTER DATABASE [DIGITALBOOKS] SET  READ_WRITE 
+GO

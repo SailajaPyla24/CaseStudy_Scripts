@@ -1,0 +1,273 @@
+USE [master]
+GO
+/****** Object:  Database [CaseStudy]    Script Date: 23-11-2022 16:51:13 ******/
+CREATE DATABASE [CaseStudy]
+ CONTAINMENT = NONE
+ ON  PRIMARY 
+( NAME = N'CaseStudy', FILENAME = N'C:\Users\cogdotnet1687\CaseStudy.mdf' , SIZE = 8192KB , MAXSIZE = UNLIMITED, FILEGROWTH = 65536KB )
+ LOG ON 
+( NAME = N'CaseStudy_log', FILENAME = N'C:\Users\cogdotnet1687\CaseStudy_log.ldf' , SIZE = 8192KB , MAXSIZE = 2048GB , FILEGROWTH = 65536KB )
+ WITH CATALOG_COLLATION = DATABASE_DEFAULT
+GO
+ALTER DATABASE [CaseStudy] SET COMPATIBILITY_LEVEL = 150
+GO
+IF (1 = FULLTEXTSERVICEPROPERTY('IsFullTextInstalled'))
+begin
+EXEC [CaseStudy].[dbo].[sp_fulltext_database] @action = 'enable'
+end
+GO
+ALTER DATABASE [CaseStudy] SET ANSI_NULL_DEFAULT OFF 
+GO
+ALTER DATABASE [CaseStudy] SET ANSI_NULLS OFF 
+GO
+ALTER DATABASE [CaseStudy] SET ANSI_PADDING OFF 
+GO
+ALTER DATABASE [CaseStudy] SET ANSI_WARNINGS OFF 
+GO
+ALTER DATABASE [CaseStudy] SET ARITHABORT OFF 
+GO
+ALTER DATABASE [CaseStudy] SET AUTO_CLOSE ON 
+GO
+ALTER DATABASE [CaseStudy] SET AUTO_SHRINK OFF 
+GO
+ALTER DATABASE [CaseStudy] SET AUTO_UPDATE_STATISTICS ON 
+GO
+ALTER DATABASE [CaseStudy] SET CURSOR_CLOSE_ON_COMMIT OFF 
+GO
+ALTER DATABASE [CaseStudy] SET CURSOR_DEFAULT  GLOBAL 
+GO
+ALTER DATABASE [CaseStudy] SET CONCAT_NULL_YIELDS_NULL OFF 
+GO
+ALTER DATABASE [CaseStudy] SET NUMERIC_ROUNDABORT OFF 
+GO
+ALTER DATABASE [CaseStudy] SET QUOTED_IDENTIFIER OFF 
+GO
+ALTER DATABASE [CaseStudy] SET RECURSIVE_TRIGGERS OFF 
+GO
+ALTER DATABASE [CaseStudy] SET  ENABLE_BROKER 
+GO
+ALTER DATABASE [CaseStudy] SET AUTO_UPDATE_STATISTICS_ASYNC OFF 
+GO
+ALTER DATABASE [CaseStudy] SET DATE_CORRELATION_OPTIMIZATION OFF 
+GO
+ALTER DATABASE [CaseStudy] SET TRUSTWORTHY OFF 
+GO
+ALTER DATABASE [CaseStudy] SET ALLOW_SNAPSHOT_ISOLATION OFF 
+GO
+ALTER DATABASE [CaseStudy] SET PARAMETERIZATION SIMPLE 
+GO
+ALTER DATABASE [CaseStudy] SET READ_COMMITTED_SNAPSHOT OFF 
+GO
+ALTER DATABASE [CaseStudy] SET HONOR_BROKER_PRIORITY OFF 
+GO
+ALTER DATABASE [CaseStudy] SET RECOVERY SIMPLE 
+GO
+ALTER DATABASE [CaseStudy] SET  MULTI_USER 
+GO
+ALTER DATABASE [CaseStudy] SET PAGE_VERIFY CHECKSUM  
+GO
+ALTER DATABASE [CaseStudy] SET DB_CHAINING OFF 
+GO
+ALTER DATABASE [CaseStudy] SET FILESTREAM( NON_TRANSACTED_ACCESS = OFF ) 
+GO
+ALTER DATABASE [CaseStudy] SET TARGET_RECOVERY_TIME = 60 SECONDS 
+GO
+ALTER DATABASE [CaseStudy] SET DELAYED_DURABILITY = DISABLED 
+GO
+ALTER DATABASE [CaseStudy] SET ACCELERATED_DATABASE_RECOVERY = OFF  
+GO
+ALTER DATABASE [CaseStudy] SET QUERY_STORE = OFF
+GO
+USE [CaseStudy]
+GO
+/****** Object:  Table [dbo].[Claim]    Script Date: 23-11-2022 16:51:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Claim](
+	[ClaimId] [int] IDENTITY(1000000000,1) NOT NULL,
+	[MemberId] [int] NULL,
+	[MemberName] [varchar](255) NULL,
+	[DOB] [date] NULL,
+	[DateOfAdmission] [date] NULL,
+	[DateOfDischarge] [date] NULL,
+	[ProviderName] [varchar](255) NULL,
+	[BillAmount] [float] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[ClaimId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Dependent]    Script Date: 23-11-2022 16:51:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Dependent](
+	[DependentId] [int] IDENTITY(1,1) NOT NULL,
+	[Name] [varchar](255) NULL,
+	[DOB] [date] NULL,
+	[MemberId] [int] NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[DependentId] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+/****** Object:  Table [dbo].[Members]    Script Date: 23-11-2022 16:51:13 ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[Members](
+	[Id] [int] IDENTITY(100,1) NOT NULL,
+	[MemberId]  AS ('R-'+CONVERT([varchar](10),[Id])),
+	[Name] [varchar](255) NULL,
+	[Address] [varchar](255) NULL,
+	[State] [varchar](255) NULL,
+	[Country] [varchar](255) NULL,
+	[Email] [varchar](255) NULL,
+	[PAN] [varchar](12) NULL,
+	[ContactNo] [int] NULL,
+	[DOB] [date] NULL,
+	[Password] [varchar](10) NULL,
+PRIMARY KEY CLUSTERED 
+(
+	[Id] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+SET IDENTITY_INSERT [dbo].[Claim] ON 
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000000, NULL, N'Sai', CAST(N'2000-10-28' AS Date), CAST(N'2022-06-28' AS Date), CAST(N'2022-06-29' AS Date), N'rajivhospital', 12000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000001, 100, N'sripriya', CAST(N'2022-09-06' AS Date), CAST(N'2022-09-13' AS Date), CAST(N'2022-09-20' AS Date), N'Rajiv hospitals', 20000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000002, 100, N'Sailu', CAST(N'1999-04-24' AS Date), CAST(N'2022-06-20' AS Date), CAST(N'2022-06-30' AS Date), N'KIMS', 50000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000003, 111, N'abc', CAST(N'1999-04-24' AS Date), CAST(N'2022-05-20' AS Date), CAST(N'2022-05-22' AS Date), N'NIMS', 30000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000006, 108, N'msg', CAST(N'1999-08-20' AS Date), CAST(N'2022-09-06' AS Date), CAST(N'2022-09-07' AS Date), N'janatha hospital', 1000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000007, 111, N'dudu', CAST(N'2022-10-03' AS Date), CAST(N'2022-01-01' AS Date), CAST(N'2022-01-07' AS Date), N'Sowmya Hospitals', 14000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000008, 111, N'dudu', CAST(N'2022-10-03' AS Date), CAST(N'2022-01-03' AS Date), CAST(N'2022-01-05' AS Date), N'janatha Multi hospital', 100000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000009, 111, N'Sridevi', CAST(N'2022-10-03' AS Date), CAST(N'2022-02-02' AS Date), CAST(N'2022-10-12' AS Date), N'KIMS Rjy', 750000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000010, 111, N'dudu', CAST(N'2022-10-03' AS Date), CAST(N'2022-01-03' AS Date), CAST(N'2022-10-04' AS Date), N'janatha multi specialti hospital', 100000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000011, 111, N'dudu', CAST(N'1998-09-30' AS Date), CAST(N'2022-10-01' AS Date), CAST(N'2022-10-04' AS Date), N'appolo', 120000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000012, 112, N'Elephant', CAST(N'1982-10-03' AS Date), CAST(N'2022-06-05' AS Date), CAST(N'2022-05-05' AS Date), N'ABC hospital', 1000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000013, 111, N'dudu', CAST(N'1998-09-30' AS Date), CAST(N'2022-10-05' AS Date), CAST(N'2022-10-06' AS Date), N'vhs', 100)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000014, 111, N'dudu', CAST(N'1998-09-30' AS Date), CAST(N'2022-10-05' AS Date), CAST(N'2022-10-07' AS Date), N'vhs', 100)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000015, 121, N'babu', CAST(N'1998-10-25' AS Date), CAST(N'2021-10-04' AS Date), CAST(N'2021-10-10' AS Date), N'KIMS Rjy', 10000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000016, 111, N'dudu', CAST(N'1998-09-30' AS Date), CAST(N'2022-09-06' AS Date), CAST(N'2022-09-08' AS Date), N'KIMS', 1234)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000017, 112, N'Elephant', CAST(N'1982-10-03' AS Date), CAST(N'2022-10-07' AS Date), CAST(N'2022-10-08' AS Date), N'hh', 1000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000018, 111, N'dudu', CAST(N'1998-09-30' AS Date), CAST(N'2022-10-06' AS Date), CAST(N'2022-10-07' AS Date), N'Sailaja Multi specilaity Hospital', 100)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000019, 112, N'Elephant', CAST(N'1982-10-03' AS Date), CAST(N'2022-10-06' AS Date), CAST(N'2022-10-07' AS Date), N'JNTU', 1000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000020, 112, N'Elephant', CAST(N'1982-10-03' AS Date), CAST(N'2022-10-07' AS Date), CAST(N'2022-10-08' AS Date), N'Adya Hospitals', 123)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000000021, 112, N'Elephant', CAST(N'1982-10-03' AS Date), CAST(N'2022-10-01' AS Date), CAST(N'2022-10-02' AS Date), N'janatha multi specialti hospital', 1000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000001001, 1109, N'ramana', CAST(N'1999-10-19' AS Date), CAST(N'2022-10-04' AS Date), CAST(N'2022-10-05' AS Date), N'ahahah', 10000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000001002, 1111, N'siri', CAST(N'1999-10-20' AS Date), CAST(N'2022-10-12' AS Date), CAST(N'2022-10-13' AS Date), N'KIMS Rjy', 10000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000001003, 1112, N'sailaja', CAST(N'1999-10-06' AS Date), CAST(N'2022-10-04' AS Date), CAST(N'2022-10-05' AS Date), N'Jnatha Hospital', 10000)
+GO
+INSERT [dbo].[Claim] ([ClaimId], [MemberId], [MemberName], [DOB], [DateOfAdmission], [DateOfDischarge], [ProviderName], [BillAmount]) VALUES (1000001004, 1112, N'adya', CAST(N'1999-10-06' AS Date), CAST(N'2022-10-05' AS Date), CAST(N'2022-10-06' AS Date), N'janatha Multi hospital', 100000)
+GO
+SET IDENTITY_INSERT [dbo].[Claim] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Dependent] ON 
+GO
+INSERT [dbo].[Dependent] ([DependentId], [Name], [DOB], [MemberId]) VALUES (1, N'Sridevi', CAST(N'1985-10-04' AS Date), 111)
+GO
+INSERT [dbo].[Dependent] ([DependentId], [Name], [DOB], [MemberId]) VALUES (2, N'prasad', CAST(N'1970-05-19' AS Date), 111)
+GO
+INSERT [dbo].[Dependent] ([DependentId], [Name], [DOB], [MemberId]) VALUES (7, N'abc', CAST(N'2002-10-06' AS Date), 121)
+GO
+INSERT [dbo].[Dependent] ([DependentId], [Name], [DOB], [MemberId]) VALUES (8, N'sri', CAST(N'1993-10-17' AS Date), 112)
+GO
+INSERT [dbo].[Dependent] ([DependentId], [Name], [DOB], [MemberId]) VALUES (12, N'Adhya', CAST(N'2016-11-18' AS Date), 126)
+GO
+INSERT [dbo].[Dependent] ([DependentId], [Name], [DOB], [MemberId]) VALUES (1002, N'kiran', CAST(N'1999-10-06' AS Date), 1109)
+GO
+INSERT [dbo].[Dependent] ([DependentId], [Name], [DOB], [MemberId]) VALUES (1003, N'adya', CAST(N'2017-10-04' AS Date), 1111)
+GO
+INSERT [dbo].[Dependent] ([DependentId], [Name], [DOB], [MemberId]) VALUES (1004, N'adya', CAST(N'1999-10-06' AS Date), 1112)
+GO
+INSERT [dbo].[Dependent] ([DependentId], [Name], [DOB], [MemberId]) VALUES (1005, N'arjun', CAST(N'1998-10-07' AS Date), 1112)
+GO
+SET IDENTITY_INSERT [dbo].[Dependent] OFF
+GO
+SET IDENTITY_INSERT [dbo].[Members] ON 
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (100, N'sailaja', N'pkl', N'AP', N'India', N'updates2@gmail.com', N'FFRGG1234K', 1234567897, CAST(N'1999-04-24' AS Date), NULL)
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (101, N'Siri', N'HYD', N'Telangana', N'India', N'siri@gmail.com', N'bppp23456b', 1234567890, CAST(N'1997-06-11' AS Date), NULL)
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (102, N'Arjun', N'Nsp', N'AP', N'India', N'Arjun@gmail.com', N'ABCDE1234K', 1234567891, CAST(N'2022-01-11' AS Date), NULL)
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (103, N'Arjun', N'Nsp', N'AP', N'India', N'Arjun@gmail.com', N'ABCDE1234K', 1234567891, CAST(N'2022-01-11' AS Date), NULL)
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (104, N'Arjun', N'Nsp', N'AP', N'India', N'Arjun@gmail.com', N'ABCDE1234K', 1234567891, CAST(N'2022-01-11' AS Date), NULL)
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (105, N'babu', N'narasapur', N'TS', N'India', N'babu@gmail.com', N'abcde1234k', 1234567890, CAST(N'2022-01-27' AS Date), NULL)
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (108, N'er', N'', N'', N'', N'', N'', 0, CAST(N'2022-09-29' AS Date), NULL)
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (109, N'catherine', N'jp road bvrm', N'AP', N'America', N'catherine@gmail.com', N'ABCDDH1234K', 1234567890, CAST(N'2022-01-12' AS Date), N'1234')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (110, N'catherine', N'jp road bvrm', N'AP', N'America', N'catherine@gmail.com', N'ABCDDH1234K', 1234567890, CAST(N'2022-01-12' AS Date), N'1234')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (111, N'dudu', N'rjy', N'AP', N'India', N'updateangular@gmail.com', N'ABCD1234S', 1234567899, CAST(N'1998-09-30' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (112, N'Elephant', N'Chennai', N'AP', N'India', N'ele@gmail.com', N'FAWJJ7446K', 1234567890, CAST(N'1982-10-03' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (120, N'Himansh', N'Nsp', N'AP', N'India', N'himansh@gmail.com', N'ABCDE1234K', 1234567890, CAST(N'2000-10-10' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (121, N'babu', N'Nsp', N'TS', N'India', N'babu@gmail.com', N'ABCDE1234K', 1234567890, CAST(N'1998-10-25' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (123, N'Ink', N'Rzl', N'AP', N'India', N'ele@gmail.com', N'ABCDE1234K', 1234567890, CAST(N'2000-10-11' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (124, N'krishna', N'mumbai', N'Maharashtra', N'India', N'ele@gmail.com', N'ABCDE1234K', 1234567890, CAST(N'1999-10-11' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (125, N'hgjn', N'ghgc', N'AP', N'India', N'catherine@gmail.com', N'ABCDE1234K', 1234567890, CAST(N'1999-10-11' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (126, N'Example', N'Hitech city', N'TS', N'India', N'example@gmail.com', N'BUPP1234B', 1234567890, CAST(N'2000-10-14' AS Date), N'MTIzNDU2')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (1109, N'ramana', N'Nsp', N'TS', N'India', N'arjum@gmail.com', N'ABCDE1234K', 1234567890, CAST(N'1999-10-19' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (1110, N'kaveri', N'Nsp', N'TS', N'India', N'ele@gmail.com', N'ABCDE1234K', 1234567890, CAST(N'1999-10-12' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (1111, N'siri', N'hyderabad', N'TS', N'India', N'siri@gmail.com', N'ABCDE1234K', 1234567890, CAST(N'1999-10-20' AS Date), N'MTIzNA==')
+GO
+INSERT [dbo].[Members] ([Id], [Name], [Address], [State], [Country], [Email], [PAN], [ContactNo], [DOB], [Password]) VALUES (1112, N'sailaja', N'palakollu', N'AP', N'India', N'sailaja@gmail.com', N'ABCDE1234K', 1234567890, CAST(N'1999-10-06' AS Date), N'MTIzNA==')
+GO
+SET IDENTITY_INSERT [dbo].[Members] OFF
+GO
+ALTER TABLE [dbo].[Claim]  WITH CHECK ADD FOREIGN KEY([MemberId])
+REFERENCES [dbo].[Members] ([Id])
+GO
+ALTER TABLE [dbo].[Dependent]  WITH CHECK ADD FOREIGN KEY([MemberId])
+REFERENCES [dbo].[Members] ([Id])
+GO
+ALTER TABLE [dbo].[Claim]  WITH CHECK ADD CHECK  (([ClaimId]>=(1000000000) AND [ClaimId]<=(9999999999.)))
+GO
+USE [master]
+GO
+ALTER DATABASE [CaseStudy] SET  READ_WRITE 
+GO
